@@ -109,6 +109,46 @@ func (k *kustomize) Build(opts *v1alpha1.ApplicationSourceKustomize, kustomizeOp
 				return nil, nil, err
 			}
 		}
+
+		buildGeneratorArgs := func(g v1alpha1.KustomizeGenerator) ([]string, error) {
+			var args []string
+
+			if g.Name == "" {
+				return args, errors.New("generator missing name, cannot add kustomize resource generator without name")
+			}
+
+			if g.Namespace != "" {
+				args = append(args, fmt.Sprintf("--namespace=%s", g.Namespace))
+			}
+
+			for _, l := range g.Literals {
+				args = append(args, fmt.Sprintf("--from-literal=%s", l))
+			}
+
+			for _, f := range g.Files {
+				args = append(args, fmt.Sprintf("--from-file=%s", f))
+			}
+
+			for _, e := range g.EnvFiles {
+				args = append(args, fmt.Sprintf("--from-env-file=%s", e))
+			}
+
+			return args, nil
+		}
+
+		if len(opts.ConfigMapGenerators) > 0 {
+			// edit add configmap <NAME> --from-file=[key=]source --from-literal=key1=value1 --from-env-file=file.env
+			//args:= []string{"edit", "add", "configmap"}
+			for _, generator := range opts.ConfigMapGenerators {
+				args, err := buildGeneratorArgs(generator)
+				if err != nil {
+					log.Warnf("Could not create configMapGenerator: %v", err)
+					continue
+				}
+
+				args := append([]string{"edit", "add", "configmap"}, args...)
+			}
+		}
 	}
 
 	var cmd *exec.Cmd
