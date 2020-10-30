@@ -110,12 +110,8 @@ func (k *kustomize) Build(opts *v1alpha1.ApplicationSourceKustomize, kustomizeOp
 			}
 		}
 
-		buildGeneratorArgs := func(g v1alpha1.KustomizeGenerator) ([]string, error) {
-			var args []string
-
-			if g.Name == "" {
-				return args, errors.New("generator missing name, cannot add kustomize resource generator without name")
-			}
+		buildGeneratorArgs := func(g v1alpha1.KustomizeGeneratorOptions) ([]string, error) {
+			args := []string{g.Name}
 
 			if g.Namespace != "" {
 				args = append(args, fmt.Sprintf("--namespace=%s", g.Namespace))
@@ -138,15 +134,36 @@ func (k *kustomize) Build(opts *v1alpha1.ApplicationSourceKustomize, kustomizeOp
 
 		if len(opts.ConfigMapGenerators) > 0 {
 			// edit add configmap <NAME> --from-file=[key=]source --from-literal=key1=value1 --from-env-file=file.env
-			//args:= []string{"edit", "add", "configmap"}
-			for _, generator := range opts.ConfigMapGenerators {
-				args, err := buildGeneratorArgs(generator)
+			for _, g := range opts.ConfigMapGenerators {
+				args, err := buildGeneratorArgs(g.KustomizeGeneratorOptions)
+
+				args = append([]string{"edit", "add", "configmap"}, args...)
+
+				cmd := exec.Command(k.getBinaryPath(), args...)
+				cmd.Dir = k.path
+				_, err = executil.Run(cmd)
 				if err != nil {
-					log.Warnf("Could not create configMapGenerator: %v", err)
-					continue
+					return nil, nil, err
+				}
+			}
+		}
+
+		if len(opts.SecretGenerators) > 0 {
+			for _, g := range opts.SecretGenerators {
+				args, err := buildGeneratorArgs(g.KustomizeGeneratorOptions)
+
+				if g.Type != "" {
+					args = append(args, fmt.Sprintf("--type=%s", g.Type))
 				}
 
-				args := append([]string{"edit", "add", "configmap"}, args...)
+				args = append([]string{"edit", "add", "secret"}, args...)
+
+				cmd := exec.Command(k.getBinaryPath(), args...)
+				cmd.Dir = k.path
+				_, err = executil.Run(cmd)
+				if err != nil {
+					return nil, nil, err
+				}
 			}
 		}
 	}
