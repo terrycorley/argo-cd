@@ -328,6 +328,40 @@ func (images KustomizeImages) Find(image KustomizeImage) int {
 	return -1
 }
 
+// KustomizeGenerator specifies a resource generator in Kustomize, such as a conifgMapGenerator or
+// acts the base type for a specialized generator, such as the secretGenerator.
+type KustomizeGenerator struct {
+	// Optional Namespace for the generated resource
+	Namespace string `json:"namespace,omitempty" protobuf:"bytes,1,opt,name=namespace"`
+	// Name stem for the generated resource. Resulting name will
+	// be NamePrefix + Name + hash(content)
+	Name string `json:"name,omitempty" protobuf:"bytes,2,opt,name=name"`
+	// Literals is a list of literal key-value pair sources. Each literal should
+	// be a key and a literal value, e.g. `key=value`
+	Literals []string `json:"literals,omitempty" protobuf:"bytes,7,opt,name=literals"`
+	// Files is a list of file "sources" to use when creating a list of key, value pairs.
+	// A source takes the
+	Files []string `json:"files,omitempty" protobuf:"bytes,8,opt,name=files"`
+	// EnvFiles is a list of file paths where each file should be a key=value pair per line
+	EnvFiles []string `json:"envs,omitempty" protobuf:"bytes,9,opt,name=envs"`
+}
+
+
+// KustomizeSecretGenerator is a Kubernetes Secret resource generator in Kustomize.
+type KustomizeSecretGenerator struct {
+	KustomizeGenerator
+
+	// Type is the type of secret, specifically the type field in v1.Secret of the Kubernetes API.
+	// Possible values include "Opaque", which is the default, or "kubernetes.io/tls"
+	// If "kubernetes.io/tls", then "literals" or "files" must have exactly two keys:
+	// "tls.key" and "tls.crt"
+	Type string `json:"type,omitempty" protobuf:"bytes,10,opt,name=type"`
+}
+
+type KustomizeConfigMapGenerators []KustomizeGenerator
+
+type KustomizeSecretGenerators []KustomizeSecretGenerator
+
 // ApplicationSourceKustomize holds kustomize specific options
 type ApplicationSourceKustomize struct {
 	// NamePrefix is a prefix appended to resources for kustomize apps
@@ -340,6 +374,9 @@ type ApplicationSourceKustomize struct {
 	CommonLabels map[string]string `json:"commonLabels,omitempty" protobuf:"bytes,4,opt,name=commonLabels"`
 	// Version contains optional Kustomize version
 	Version string `json:"version,omitempty" protobuf:"bytes,5,opt,name=version"`
+	// ConfigMapGenerators contain ConfigMaps to generate
+	ConfigMapGenerators KustomizeConfigMapGenerators `json:"configMapGenerators,omitempty" protobuf:"bytes,6,opt,name=configMapGenerators"`
+	SecretGenerators KustomizeSecretGenerators `json:"secretGenerators,omitempty" protobuf:"bytes,7,opt,name=secretGenerators"`
 }
 
 func (k *ApplicationSourceKustomize) AllowsConcurrentProcessing() bool {
