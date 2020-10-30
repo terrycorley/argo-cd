@@ -2,7 +2,7 @@ package kustomize
 
 import (
 	"io/ioutil"
-	"path"
+	"os"
 	"path/filepath"
 	"testing"
 
@@ -17,21 +17,28 @@ const kustomization1 = "kustomization_yaml"
 const kustomization2a = "kustomization_yml"
 const kustomization2b = "Kustomization"
 
-func testDataDir() (string, error) {
+func testDataDir(t *testing.T, src string) (string, func()) {
 	res, err := ioutil.TempDir("", "kustomize-test")
+
 	if err != nil {
-		return "", err
+		t.Fatalf("failed to create temp kustomize test directory. err: %s", err)
 	}
-	_, err = exec.RunCommand("cp", exec.CmdOpts{}, "-r", "./testdata/"+kustomization1, filepath.Join(res, "testdata"))
+
+	dest := filepath.Join(res, filepath.Base(src))
+
+	_, err = exec.RunCommand("cp", exec.CmdOpts{}, "-r", src, dest)
+
 	if err != nil {
-		return "", err
+		t.Fatalf("failed to copy src directory %s to kustomize test directory %s. err: %s", src, dest, err)
 	}
-	return path.Join(res, "testdata"), nil
+
+	return dest, func() { _ = os.RemoveAll(dest) }
 }
 
+
 func TestKustomizeBuild(t *testing.T) {
-	appPath, err := testDataDir()
-	assert.Nil(t, err)
+	appPath, destroyDataDir := testDataDir(t, "./testdata/" + kustomization1)
+	defer destroyDataDir()
 	namePrefix := "namePrefix-"
 	nameSuffix := "-nameSuffix"
 	kustomize := NewKustomizeApp(appPath, git.NopCreds{}, "", "")
