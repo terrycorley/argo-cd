@@ -328,9 +328,9 @@ func (images KustomizeImages) Find(image KustomizeImage) int {
 	return -1
 }
 
-// KustomizeGenerator specifies a resource generator in Kustomize, such as a conifgMapGenerator or
-// acts the base type for a specialized generator, such as the secretGenerator.
-type KustomizeGenerator struct {
+// KustomizeGeneratorOptions specifies common options for resource generators in Kustomize, such as a
+// conifgMapGenerator or secretGenerator
+type KustomizeGeneratorOptions struct {
 	// Optional Namespace for the generated resource
 	Namespace string `json:"namespace,omitempty" protobuf:"bytes,1,opt,name=namespace"`
 	// Name stem for the generated resource. Resulting name will
@@ -349,7 +349,7 @@ type KustomizeGenerator struct {
 
 // KustomizeSecretGenerator is a Kubernetes Secret resource generator in Kustomize.
 type KustomizeSecretGenerator struct {
-	KustomizeGenerator
+	KustomizeGeneratorOptions
 
 	// Type is the type of secret, specifically the type field in v1.Secret of the Kubernetes API.
 	// Possible values include "Opaque", which is the default, or "kubernetes.io/tls"
@@ -358,7 +358,11 @@ type KustomizeSecretGenerator struct {
 	Type string `json:"type,omitempty" protobuf:"bytes,10,opt,name=type"`
 }
 
-type KustomizeConfigMapGenerators []KustomizeGenerator
+type KustomizeConfigMapGenerator struct {
+	KustomizeGeneratorOptions
+}
+
+type KustomizeConfigMapGenerators []KustomizeConfigMapGenerator
 
 type KustomizeSecretGenerators []KustomizeSecretGenerator
 
