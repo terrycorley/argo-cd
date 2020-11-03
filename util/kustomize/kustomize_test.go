@@ -35,6 +35,26 @@ func testDataDir(t *testing.T, src string) (string, func()) {
 	return dest, func() { _ = os.RemoveAll(dest) }
 }
 
+func testFileRead(t *testing.T, src string) string {
+	file, err := os.Open(src)
+	if err != nil {
+		t.Fatalf("could not open file: %s", err)
+	}
+
+	defer func() {
+		if err = file.Close(); err != nil {
+			t.Fatalf("could close  opened file: %s", err)
+		}
+	}()
+
+	b, err := ioutil.ReadAll(file)
+
+	if err != nil {
+		t.Fatalf("could read file: %s", err)
+	}
+
+	return string(b)
+}
 
 func TestKustomizeBuild(t *testing.T) {
 	appPath, destroyDataDir := testDataDir(t, "./testdata/" + kustomization1)
