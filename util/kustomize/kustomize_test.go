@@ -13,9 +13,12 @@ import (
 	"github.com/argoproj/argo-cd/util/git"
 )
 
-const kustomization1 = "kustomization_yaml"
-const kustomization2a = "kustomization_yml"
-const kustomization2b = "Kustomization"
+const (
+	kustomization1  = "kustomization_yaml"
+	kustomization2a = "kustomization_yml"
+	kustomization2b = "Kustomization"
+	generators      = "generators"
+)
 
 func testDataDir(t *testing.T, src string) (string, func()) {
 	res, err := ioutil.TempDir("", "kustomize-test")
@@ -57,7 +60,7 @@ func testFileRead(t *testing.T, src string) string {
 }
 
 func TestKustomizeBuild(t *testing.T) {
-	appPath, destroyDataDir := testDataDir(t, "./testdata/" + kustomization1)
+	appPath, destroyDataDir := testDataDir(t, "./testdata/"+kustomization1)
 	defer destroyDataDir()
 	namePrefix := "namePrefix-"
 	nameSuffix := "-nameSuffix"
