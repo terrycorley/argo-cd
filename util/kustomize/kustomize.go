@@ -110,38 +110,30 @@ func (k *kustomize) Build(opts *v1alpha1.ApplicationSourceKustomize, kustomizeOp
 			}
 		}
 
-		buildGeneratorArgs := func(g v1alpha1.KustomizeGeneratorOptions) ([]string, error) {
-			args := []string{g.Name}
-
-			if g.Namespace != "" {
-				args = append(args, fmt.Sprintf("--namespace=%s", g.Namespace))
-			}
-
-			for _, l := range g.Literals {
-				args = append(args, fmt.Sprintf("--from-literal=%s", l))
-			}
-
-			for _, f := range g.Files {
-				args = append(args, fmt.Sprintf("--from-file=%s", f))
-			}
-
-			for _, e := range g.EnvFiles {
-				args = append(args, fmt.Sprintf("--from-env-file=%s", e))
-			}
-
-			return args, nil
-		}
-
 		if len(opts.ConfigMapGenerators) > 0 {
 			// edit add configmap <NAME> --from-file=[key=]source --from-literal=key1=value1 --from-env-file=file.env
 			for _, g := range opts.ConfigMapGenerators {
-				args, err := buildGeneratorArgs(g.KustomizeGeneratorOptions)
+				args := []string{"edit", "add", "configmap", g.Name}
 
-				args = append([]string{"edit", "add", "configmap"}, args...)
+				if g.Namespace != "" {
+					args = append(args, fmt.Sprintf("--namespace=%s", g.Namespace))
+				}
+
+				for _, l := range g.Literals {
+					args = append(args, fmt.Sprintf("--from-literal=%s", l))
+				}
+
+				for _, f := range g.Files {
+					args = append(args, fmt.Sprintf("--from-file=%s", f))
+				}
+
+				for _, e := range g.EnvFiles {
+					args = append(args, fmt.Sprintf("--from-env-file=%s", e))
+				}
 
 				cmd := exec.Command(k.getBinaryPath(), args...)
 				cmd.Dir = k.path
-				_, err = executil.Run(cmd)
+				_, err := executil.Run(cmd)
 				if err != nil {
 					return nil, nil, err
 				}
@@ -150,17 +142,31 @@ func (k *kustomize) Build(opts *v1alpha1.ApplicationSourceKustomize, kustomizeOp
 
 		if len(opts.SecretGenerators) > 0 {
 			for _, g := range opts.SecretGenerators {
-				args, err := buildGeneratorArgs(g.KustomizeGeneratorOptions)
+				args := []string{"edit", "add", "secret", g.Name}
+
+				if g.Namespace != "" {
+					args = append(args, fmt.Sprintf("--namespace=%s", g.Namespace))
+				}
+
+				for _, l := range g.Literals {
+					args = append(args, fmt.Sprintf("--from-literal=%s", l))
+				}
+
+				for _, f := range g.Files {
+					args = append(args, fmt.Sprintf("--from-file=%s", f))
+				}
+
+				for _, e := range g.EnvFiles {
+					args = append(args, fmt.Sprintf("--from-env-file=%s", e))
+				}
 
 				if g.Type != "" {
 					args = append(args, fmt.Sprintf("--type=%s", g.Type))
 				}
 
-				args = append([]string{"edit", "add", "secret"}, args...)
-
 				cmd := exec.Command(k.getBinaryPath(), args...)
 				cmd.Dir = k.path
-				_, err = executil.Run(cmd)
+				_, err := executil.Run(cmd)
 				if err != nil {
 					return nil, nil, err
 				}
