@@ -59,7 +59,9 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 		"github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1.JsonnetVar":                       schema_pkg_apis_application_v1alpha1_JsonnetVar(ref),
 		"github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1.KnownTypeField":                   schema_pkg_apis_application_v1alpha1_KnownTypeField(ref),
 		"github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1.KsonnetParameter":                 schema_pkg_apis_application_v1alpha1_KsonnetParameter(ref),
+		"github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1.KustomizeConfigMapGenerator":      schema_pkg_apis_application_v1alpha1_KustomizeConfigMapGenerator(ref),
 		"github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1.KustomizeOptions":                 schema_pkg_apis_application_v1alpha1_KustomizeOptions(ref),
+		"github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1.KustomizeSecretGenerator":         schema_pkg_apis_application_v1alpha1_KustomizeSecretGenerator(ref),
 		"github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1.Operation":                        schema_pkg_apis_application_v1alpha1_Operation(ref),
 		"github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1.OperationInitiator":               schema_pkg_apis_application_v1alpha1_OperationInitiator(ref),
 		"github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1.OperationState":                   schema_pkg_apis_application_v1alpha1_OperationState(ref),
@@ -908,9 +910,36 @@ func schema_pkg_apis_application_v1alpha1_ApplicationSourceKustomize(ref common.
 							},
 						},
 					},
+					"configMapGenerators": {
+						SchemaProps: spec.SchemaProps{
+							Description: "ConfigMapGenerators contain ConfigMaps to generate",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Ref: ref("github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1.KustomizeConfigMapGenerator"),
+									},
+								},
+							},
+						},
+					},
+					"secretGenerators": {
+						SchemaProps: spec.SchemaProps{
+							Type: []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Ref: ref("github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1.KustomizeSecretGenerator"),
+									},
+								},
+							},
+						},
+					},
 				},
 			},
 		},
+		Dependencies: []string{
+			"github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1.KustomizeConfigMapGenerator", "github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1.KustomizeSecretGenerator"},
 	}
 }
 
@@ -2118,6 +2147,75 @@ func schema_pkg_apis_application_v1alpha1_KsonnetParameter(ref common.ReferenceC
 	}
 }
 
+func schema_pkg_apis_application_v1alpha1_KustomizeConfigMapGenerator(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "KustomizeSecretGenerator is a Kubernetes Secret resource generator in Kustomize.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"namespace": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Optional Namespace for the generated resource",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"name": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Name stem for the generated resource. Resulting name will be NamePrefix + Name + hash(content)",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"literals": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Literals is a list of literal key-value pair sources. Each literal should be a key and a literal value, e.g. `key=value`",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Type:   []string{"string"},
+										Format: "",
+									},
+								},
+							},
+						},
+					},
+					"files": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Files is a list of file \"sources\" to use when creating a list of key, value pairs. A source takes the",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Type:   []string{"string"},
+										Format: "",
+									},
+								},
+							},
+						},
+					},
+					"envs": {
+						SchemaProps: spec.SchemaProps{
+							Description: "EnvFiles is a list of file paths where each file should be a key=value pair per line",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Type:   []string{"string"},
+										Format: "",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+}
+
 func schema_pkg_apis_application_v1alpha1_KustomizeOptions(ref common.ReferenceCallback) common.OpenAPIDefinition {
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
@@ -2141,6 +2239,82 @@ func schema_pkg_apis_application_v1alpha1_KustomizeOptions(ref common.ReferenceC
 					},
 				},
 				Required: []string{"BuildOptions", "BinaryPath"},
+			},
+		},
+	}
+}
+
+func schema_pkg_apis_application_v1alpha1_KustomizeSecretGenerator(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "KustomizeSecretGenerator is a Kubernetes Secret resource generator in Kustomize.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"namespace": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Optional Namespace for the generated resource",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"name": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Name stem for the generated resource. Resulting name will be NamePrefix + Name + hash(content)",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"literals": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Literals is a list of literal key-value pair sources. Each literal should be a key and a literal value, e.g. `key=value`",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Type:   []string{"string"},
+										Format: "",
+									},
+								},
+							},
+						},
+					},
+					"files": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Files is a list of file \"sources\" to use when creating a list of key, value pairs. A source takes the",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Type:   []string{"string"},
+										Format: "",
+									},
+								},
+							},
+						},
+					},
+					"envs": {
+						SchemaProps: spec.SchemaProps{
+							Description: "EnvFiles is a list of file paths where each file should be a key=value pair per line",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Type:   []string{"string"},
+										Format: "",
+									},
+								},
+							},
+						},
+					},
+					"type": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Type is the type of secret, specifically the type field in v1.Secret of the Kubernetes API. Possible values include \"Opaque\", which is the default, or \"kubernetes.io/tls\" If \"kubernetes.io/tls\", then \"literals\" or \"files\" must have exactly two keys: \"tls.key\" and \"tls.crt\"",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+				},
 			},
 		},
 	}

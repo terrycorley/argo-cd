@@ -26,6 +26,12 @@ API rule violation: list_type_missing,github.com/argoproj/argo-cd/pkg/apis/appli
 API rule violation: list_type_missing,github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1,Command,Command
 API rule violation: list_type_missing,github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1,ExecProviderConfig,Args
 API rule violation: list_type_missing,github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1,JWTTokens,Items
+API rule violation: list_type_missing,github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1,KustomizeConfigMapGenerator,EnvFiles
+API rule violation: list_type_missing,github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1,KustomizeConfigMapGenerator,Files
+API rule violation: list_type_missing,github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1,KustomizeConfigMapGenerator,Literals
+API rule violation: list_type_missing,github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1,KustomizeSecretGenerator,EnvFiles
+API rule violation: list_type_missing,github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1,KustomizeSecretGenerator,Files
+API rule violation: list_type_missing,github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1,KustomizeSecretGenerator,Literals
 API rule violation: list_type_missing,github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1,Operation,Info
 API rule violation: list_type_missing,github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1,OrphanedResourcesMonitorSettings,Ignore
 API rule violation: list_type_missing,github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1,OverrideIgnoreDiff,JSONPointers
@@ -58,8 +64,10 @@ API rule violation: names_match,github.com/argoproj/argo-cd/pkg/apis/application
 API rule violation: names_match,github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1,ConnectionState,ModifiedAt
 API rule violation: names_match,github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1,JWTToken,ExpiresAt
 API rule violation: names_match,github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1,JWTToken,IssuedAt
+API rule violation: names_match,github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1,KustomizeConfigMapGenerator,EnvFiles
 API rule violation: names_match,github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1,KustomizeOptions,BinaryPath
 API rule violation: names_match,github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1,KustomizeOptions,BuildOptions
+API rule violation: names_match,github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1,KustomizeSecretGenerator,EnvFiles
 API rule violation: names_match,github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1,Repository,EnableLFS
 API rule violation: names_match,github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1,ResourceActionDefinition,ActionLua
 API rule violation: names_match,github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1,ResourceActions,ActionDiscoveryLua

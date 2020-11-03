@@ -188,7 +188,7 @@
           "ApplicationService"
         ],
         "summary": "List returns list of applications",
-        "operationId": "ListMixin9",
+        "operationId": "ListMixin6",
         "parameters": [
           {
             "type": "string",
@@ -239,7 +239,7 @@
           "ApplicationService"
         ],
         "summary": "Create creates an application",
-        "operationId": "CreateMixin9",
+        "operationId": "CreateMixin6",
         "parameters": [
           {
             "name": "body",
@@ -266,7 +266,7 @@
           "ApplicationService"
         ],
         "summary": "Update updates an application",
-        "operationId": "UpdateMixin9",
+        "operationId": "UpdateMixin6",
         "parameters": [
           {
             "type": "string",
@@ -400,7 +400,7 @@
           "ApplicationService"
         ],
         "summary": "Get returns an application by name",
-        "operationId": "GetMixin9",
+        "operationId": "GetMixin6",
         "parameters": [
           {
             "type": "string",
@@ -452,7 +452,7 @@
           "ApplicationService"
         ],
         "summary": "Delete deletes an application",
-        "operationId": "DeleteMixin9",
+        "operationId": "DeleteMixin6",
         "parameters": [
           {
             "type": "string",
@@ -1162,7 +1162,7 @@
           "ClusterService"
         ],
         "summary": "List returns list of clusters",
-        "operationId": "List",
+        "operationId": "ListMixin9",
         "parameters": [
           {
             "type": "string",
@@ -1189,7 +1189,7 @@
           "ClusterService"
         ],
         "summary": "Create creates a cluster",
-        "operationId": "Create",
+        "operationId": "CreateMixin9",
         "parameters": [
           {
             "name": "body",
@@ -1216,7 +1216,7 @@
           "ClusterService"
         ],
         "summary": "Update updates a cluster",
-        "operationId": "Update",
+        "operationId": "UpdateMixin9",
         "parameters": [
           {
             "type": "string",
@@ -1250,7 +1250,7 @@
           "ClusterService"
         ],
         "summary": "Get returns a cluster by server address",
-        "operationId": "GetMixin2",
+        "operationId": "GetMixin9",
         "parameters": [
           {
             "type": "string",
@@ -1278,7 +1278,7 @@
           "ClusterService"
         ],
         "summary": "Delete deletes a cluster",
-        "operationId": "Delete",
+        "operationId": "DeleteMixin9",
         "parameters": [
           {
             "type": "string",
@@ -1358,7 +1358,7 @@
           "GPGKeyService"
         ],
         "summary": "List all available repository certificates",
-        "operationId": "ListMixin7",
+        "operationId": "ListMixin4",
         "parameters": [
           {
             "type": "string",
@@ -1381,7 +1381,7 @@
           "GPGKeyService"
         ],
         "summary": "Create one or more GPG public keys in the server's configuration",
-        "operationId": "CreateMixin7",
+        "operationId": "CreateMixin4",
         "parameters": [
           {
             "description": "Raw key data of the GPG key(s) to create",
@@ -1407,7 +1407,7 @@
           "GPGKeyService"
         ],
         "summary": "Delete specified GPG public key from the server's configuration",
-        "operationId": "DeleteMixin7",
+        "operationId": "DeleteMixin4",
         "parameters": [
           {
             "type": "string",
@@ -1432,7 +1432,7 @@
           "GPGKeyService"
         ],
         "summary": "Get information about specified GPG public key from the server",
-        "operationId": "GetMixin7",
+        "operationId": "GetMixin4",
         "parameters": [
           {
             "type": "string",
@@ -1458,7 +1458,7 @@
           "ProjectService"
         ],
         "summary": "List returns list of projects",
-        "operationId": "ListMixin6",
+        "operationId": "List",
         "parameters": [
           {
             "type": "string",
@@ -1480,7 +1480,7 @@
           "ProjectService"
         ],
         "summary": "Create a new project",
-        "operationId": "CreateMixin6",
+        "operationId": "Create",
         "parameters": [
           {
             "name": "body",
@@ -1507,7 +1507,7 @@
           "ProjectService"
         ],
         "summary": "Get returns a project by name",
-        "operationId": "GetMixin6",
+        "operationId": "GetMixin3",
         "parameters": [
           {
             "type": "string",
@@ -1530,7 +1530,7 @@
           "ProjectService"
         ],
         "summary": "Delete deletes a project",
-        "operationId": "DeleteMixin6",
+        "operationId": "Delete",
         "parameters": [
           {
             "type": "string",
@@ -1630,7 +1630,7 @@
           "ProjectService"
         ],
         "summary": "Update updates a project",
-        "operationId": "UpdateMixin6",
+        "operationId": "Update",
         "parameters": [
           {
             "type": "string",
@@ -1948,7 +1948,7 @@
           "RepositoryService"
         ],
         "summary": "Get returns a repository or its credentials",
-        "operationId": "GetMixin3",
+        "operationId": "GetMixin8",
         "parameters": [
           {
             "type": "string",
@@ -2011,7 +2011,7 @@
         "tags": [
           "RepositoryService"
         ],
-        "summary": "ListApps returns list of apps in the repo",
+        "summary": "ListApps returns list of apps in the repe",
         "operationId": "ListApps",
         "parameters": [
           {
@@ -2176,7 +2176,7 @@
           "SessionService"
         ],
         "summary": "Create a new JWT for authentication and set a cookie if using HTTP",
-        "operationId": "CreateMixin11",
+        "operationId": "CreateMixin5",
         "parameters": [
           {
             "name": "body",
@@ -2201,7 +2201,7 @@
           "SessionService"
         ],
         "summary": "Delete an existing JWT cookie if using HTTP",
-        "operationId": "DeleteMixin11",
+        "operationId": "DeleteMixin5",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -3981,6 +3981,13 @@
             "type": "string"
           }
         },
+        "configMapGenerators": {
+          "type": "array",
+          "title": "ConfigMapGenerators contain ConfigMaps to generate",
+          "items": {
+            "$ref": "#/definitions/v1alpha1KustomizeConfigMapGenerator"
+          }
+        },
         "images": {
           "type": "array",
           "title": "Images are kustomize image overrides",
@@ -3995,6 +4002,12 @@
         "nameSuffix": {
           "type": "string",
           "title": "NameSuffix is a suffix appended to resources for kustomize apps"
+        },
+        "secretGenerators": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1alpha1KustomizeSecretGenerator"
+          }
         },
         "version": {
           "type": "string",
@@ -4566,6 +4579,41 @@
         }
       }
     },
+    "v1alpha1KustomizeConfigMapGenerator": {
+      "description": "KustomizeSecretGenerator is a Kubernetes Secret resource generator in Kustomize.",
+      "type": "object",
+      "properties": {
+        "envs": {
+          "type": "array",
+          "title": "EnvFiles is a list of file paths where each file should be a key=value pair per line",
+          "items": {
+            "type": "string"
+          }
+        },
+        "files": {
+          "type": "array",
+          "title": "Files is a list of file \"sources\" to use when creating a list of key, value pairs.\nA source takes the",
+          "items": {
+            "type": "string"
+          }
+        },
+        "literals": {
+          "type": "array",
+          "title": "Literals is a list of literal key-value pair sources. Each literal should\nbe a key and a literal value, e.g. `key=value`",
+          "items": {
+            "type": "string"
+          }
+        },
+        "name": {
+          "type": "string",
+          "title": "Name stem for the generated resource. Resulting name will\nbe NamePrefix + Name + hash(content)"
+        },
+        "namespace": {
+          "type": "string",
+          "title": "Optional Namespace for the generated resource"
+        }
+      }
+    },
     "v1alpha1KustomizeOptions": {
       "type": "object",
       "title": "KustomizeOptions are options for kustomize to use when building manifests",
@@ -4577,6 +4625,45 @@
         "buildOptions": {
           "type": "string",
           "title": "BuildOptions is a string of build parameters to use when calling `kustomize build`"
+        }
+      }
+    },
+    "v1alpha1KustomizeSecretGenerator": {
+      "description": "KustomizeSecretGenerator is a Kubernetes Secret resource generator in Kustomize.",
+      "type": "object",
+      "properties": {
+        "envs": {
+          "type": "array",
+          "title": "EnvFiles is a list of file paths where each file should be a key=value pair per line",
+          "items": {
+            "type": "string"
+          }
+        },
+        "files": {
+          "type": "array",
+          "title": "Files is a list of file \"sources\" to use when creating a list of key, value pairs.\nA source takes the",
+          "items": {
+            "type": "string"
+          }
+        },
+        "literals": {
+          "type": "array",
+          "title": "Literals is a list of literal key-value pair sources. Each literal should\nbe a key and a literal value, e.g. `key=value`",
+          "items": {
+            "type": "string"
+          }
+        },
+        "name": {
+          "type": "string",
+          "title": "Name stem for the generated resource. Resulting name will\nbe NamePrefix + Name + hash(content)"
+        },
+        "namespace": {
+          "type": "string",
+          "title": "Optional Namespace for the generated resource"
+        },
+        "type": {
+          "type": "string",
+          "title": "Type is the type of secret, specifically the type field in v1.Secret of the Kubernetes API.\nPossible values include \"Opaque\", which is the default, or \"kubernetes.io/tls\"\nIf \"kubernetes.io/tls\", then \"literals\" or \"files\" must have exactly two keys:\n\"tls.key\" and \"tls.crt\""
         }
       }
     },

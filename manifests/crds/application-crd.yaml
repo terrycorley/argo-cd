@@ -260,6 +260,34 @@ spec:
                             type: string
                           description: CommonLabels adds additional kustomize commonLabels
                           type: object
+                        configMapGenerators:
+                          description: ConfigMapGenerators contain ConfigMaps to generate
+                          items:
+                            description: KustomizeSecretGenerator is a Kubernetes Secret resource generator in Kustomize.
+                            properties:
+                              envs:
+                                description: EnvFiles is a list of file paths where each file should be a key=value pair per line
+                                items:
+                                  type: string
+                                type: array
+                              files:
+                                description: Files is a list of file "sources" to use when creating a list of key, value pairs. A source takes the
+                                items:
+                                  type: string
+                                type: array
+                              literals:
+                                description: Literals is a list of literal key-value pair sources. Each literal should be a key and a literal value, e.g. `key=value`
+                                items:
+                                  type: string
+                                type: array
+                              name:
+                                description: Name stem for the generated resource. Resulting name will be NamePrefix + Name + hash(content)
+                                type: string
+                              namespace:
+                                description: Optional Namespace for the generated resource
+                                type: string
+                            type: object
+                          type: array
                         images:
                           description: Images are kustomize image overrides
                           items:
@@ -271,6 +299,36 @@ spec:
                         nameSuffix:
                           description: NameSuffix is a suffix appended to resources for kustomize apps
                           type: string
+                        secretGenerators:
+                          items:
+                            description: KustomizeSecretGenerator is a Kubernetes Secret resource generator in Kustomize.
+                            properties:
+                              envs:
+                                description: EnvFiles is a list of file paths where each file should be a key=value pair per line
+                                items:
+                                  type: string
+                                type: array
+                              files:
+                                description: Files is a list of file "sources" to use when creating a list of key, value pairs. A source takes the
+                                items:
+                                  type: string
+                                type: array
+                              literals:
+                                description: Literals is a list of literal key-value pair sources. Each literal should be a key and a literal value, e.g. `key=value`
+                                items:
+                                  type: string
+                                type: array
+                              name:
+                                description: Name stem for the generated resource. Resulting name will be NamePrefix + Name + hash(content)
+                                type: string
+                              namespace:
+                                description: Optional Namespace for the generated resource
+                                type: string
+                              type:
+                                description: 'Type is the type of secret, specifically the type field in v1.Secret of the Kubernetes API. Possible values include "Opaque", which is the default, or "kubernetes.io/tls" If "kubernetes.io/tls", then "literals" or "files" must have exactly two keys: "tls.key" and "tls.crt"'
+                                type: string
+                            type: object
+                          type: array
                         version:
                           description: Version contains optional Kustomize version
                           type: string
@@ -528,6 +586,34 @@ spec:
                         type: string
                       description: CommonLabels adds additional kustomize commonLabels
                       type: object
+                    configMapGenerators:
+                      description: ConfigMapGenerators contain ConfigMaps to generate
+                      items:
+                        description: KustomizeSecretGenerator is a Kubernetes Secret resource generator in Kustomize.
+                        properties:
+                          envs:
+                            description: EnvFiles is a list of file paths where each file should be a key=value pair per line
+                            items:
+                              type: string
+                            type: array
+                          files:
+                            description: Files is a list of file "sources" to use when creating a list of key, value pairs. A source takes the
+                            items:
+                              type: string
+                            type: array
+                          literals:
+                            description: Literals is a list of literal key-value pair sources. Each literal should be a key and a literal value, e.g. `key=value`
+                            items:
+                              type: string
+                            type: array
+                          name:
+                            description: Name stem for the generated resource. Resulting name will be NamePrefix + Name + hash(content)
+                            type: string
+                          namespace:
+                            description: Optional Namespace for the generated resource
+                            type: string
+                        type: object
+                      type: array
                     images:
                       description: Images are kustomize image overrides
                       items:
@@ -539,6 +625,36 @@ spec:
                     nameSuffix:
                       description: NameSuffix is a suffix appended to resources for kustomize apps
                       type: string
+                    secretGenerators:
+                      items:
+                        description: KustomizeSecretGenerator is a Kubernetes Secret resource generator in Kustomize.
+                        properties:
+                          envs:
+                            description: EnvFiles is a list of file paths where each file should be a key=value pair per line
+                            items:
+                              type: string
+                            type: array
+                          files:
+                            description: Files is a list of file "sources" to use when creating a list of key, value pairs. A source takes the
+                            items:
+                              type: string
+                            type: array
+                          literals:
+                            description: Literals is a list of literal key-value pair sources. Each literal should be a key and a literal value, e.g. `key=value`
+                            items:
+                              type: string
+                            type: array
+                          name:
+                            description: Name stem for the generated resource. Resulting name will be NamePrefix + Name + hash(content)
+                            type: string
+                          namespace:
+                            description: Optional Namespace for the generated resource
+                            type: string
+                          type:
+                            description: 'Type is the type of secret, specifically the type field in v1.Secret of the Kubernetes API. Possible values include "Opaque", which is the default, or "kubernetes.io/tls" If "kubernetes.io/tls", then "literals" or "files" must have exactly two keys: "tls.key" and "tls.crt"'
+                            type: string
+                        type: object
+                      type: array
                     version:
                       description: Version contains optional Kustomize version
                       type: string
@@ -812,6 +928,34 @@ spec:
                               type: string
                             description: CommonLabels adds additional kustomize commonLabels
                             type: object
+                          configMapGenerators:
+                            description: ConfigMapGenerators contain ConfigMaps to generate
+                            items:
+                              description: KustomizeSecretGenerator is a Kubernetes Secret resource generator in Kustomize.
+                              properties:
+                                envs:
+                                  description: EnvFiles is a list of file paths where each file should be a key=value pair per line
+                                  items:
+                                    type: string
+                                  type: array
+                                files:
+                                  description: Files is a list of file "sources" to use when creating a list of key, value pairs. A source takes the
+                                  items:
+                                    type: string
+                                  type: array
+                                literals:
+                                  description: Literals is a list of literal key-value pair sources. Each literal should be a key and a literal value, e.g. `key=value`
+                                  items:
+                                    type: string
+                                  type: array
+                                name:
+                                  description: Name stem for the generated resource. Resulting name will be NamePrefix + Name + hash(content)
+                                  type: string
+                                namespace:
+                                  description: Optional Namespace for the generated resource
+                                  type: string
+                              type: object
+                            type: array
                           images:
                             description: Images are kustomize image overrides
                             items:
@@ -823,6 +967,36 @@ spec:
                           nameSuffix:
                             description: NameSuffix is a suffix appended to resources for kustomize apps
                             type: string
+                          secretGenerators:
+                            items:
+                              description: KustomizeSecretGenerator is a Kubernetes Secret resource generator in Kustomize.
+                              properties:
+                                envs:
+                                  description: EnvFiles is a list of file paths where each file should be a key=value pair per line
+                                  items:
+                                    type: string
+                                  type: array
+                                files:
+                                  description: Files is a list of file "sources" to use when creating a list of key, value pairs. A source takes the
+                                  items:
+                                    type: string
+                                  type: array
+                                literals:
+                                  description: Literals is a list of literal key-value pair sources. Each literal should be a key and a literal value, e.g. `key=value`
+                                  items:
+                                    type: string
+                                  type: array
+                                name:
+                                  description: Name stem for the generated resource. Resulting name will be NamePrefix + Name + hash(content)
+                                  type: string
+                                namespace:
+                                  description: Optional Namespace for the generated resource
+                                  type: string
+                                type:
+                                  description: 'Type is the type of secret, specifically the type field in v1.Secret of the Kubernetes API. Possible values include "Opaque", which is the default, or "kubernetes.io/tls" If "kubernetes.io/tls", then "literals" or "files" must have exactly two keys: "tls.key" and "tls.crt"'
+                                  type: string
+                              type: object
+                            type: array
                           version:
                             description: Version contains optional Kustomize version
                             type: string
@@ -1099,6 +1273,34 @@ spec:
                                     type: string
                                   description: CommonLabels adds additional kustomize commonLabels
                                   type: object
+                                configMapGenerators:
+                                  description: ConfigMapGenerators contain ConfigMaps to generate
+                                  items:
+                                    description: KustomizeSecretGenerator is a Kubernetes Secret resource generator in Kustomize.
+                                    properties:
+                                      envs:
+                                        description: EnvFiles is a list of file paths where each file should be a key=value pair per line
+                                        items:
+                                          type: string
+                                        type: array
+                                      files:
+                                        description: Files is a list of file "sources" to use when creating a list of key, value pairs. A source takes the
+                                        items:
+                                          type: string
+                                        type: array
+                                      literals:
+                                        description: Literals is a list of literal key-value pair sources. Each literal should be a key and a literal value, e.g. `key=value`
+                                        items:
+                                          type: string
+                                        type: array
+                                      name:
+                                        description: Name stem for the generated resource. Resulting name will be NamePrefix + Name + hash(content)
+                                        type: string
+                                      namespace:
+                                        description: Optional Namespace for the generated resource
+                                        type: string
+                                    type: object
+                                  type: array
                                 images:
                                   description: Images are kustomize image overrides
                                   items:
@@ -1110,6 +1312,36 @@ spec:
                                 nameSuffix:
                                   description: NameSuffix is a suffix appended to resources for kustomize apps
                                   type: string
+                                secretGenerators:
+                                  items:
+                                    description: KustomizeSecretGenerator is a Kubernetes Secret resource generator in Kustomize.
+                                    properties:
+                                      envs:
+                                        description: EnvFiles is a list of file paths where each file should be a key=value pair per line
+                                        items:
+                                          type: string
+                                        type: array
+                                      files:
+                                        description: Files is a list of file "sources" to use when creating a list of key, value pairs. A source takes the
+                                        items:
+                                          type: string
+                                        type: array
+                                      literals:
+                                        description: Literals is a list of literal key-value pair sources. Each literal should be a key and a literal value, e.g. `key=value`
+                                        items:
+                                          type: string
+                                        type: array
+                                      name:
+                                        description: Name stem for the generated resource. Resulting name will be NamePrefix + Name + hash(content)
+                                        type: string
+                                      namespace:
+                                        description: Optional Namespace for the generated resource
+                                        type: string
+                                      type:
+                                        description: 'Type is the type of secret, specifically the type field in v1.Secret of the Kubernetes API. Possible values include "Opaque", which is the default, or "kubernetes.io/tls" If "kubernetes.io/tls", then "literals" or "files" must have exactly two keys: "tls.key" and "tls.crt"'
+                                        type: string
+                                    type: object
+                                  type: array
                                 version:
                                   description: Version contains optional Kustomize version
                                   type: string
@@ -1364,6 +1596,34 @@ spec:
                                 type: string
                               description: CommonLabels adds additional kustomize commonLabels
                               type: object
+                            configMapGenerators:
+                              description: ConfigMapGenerators contain ConfigMaps to generate
+                              items:
+                                description: KustomizeSecretGenerator is a Kubernetes Secret resource generator in Kustomize.
+                                properties:
+                                  envs:
+                                    description: EnvFiles is a list of file paths where each file should be a key=value pair per line
+                                    items:
+                                      type: string
+                                    type: array
+                                  files:
+                                    description: Files is a list of file "sources" to use when creating a list of key, value pairs. A source takes the
+                                    items:
+                                      type: string
+                                    type: array
+                                  literals:
+                                    description: Literals is a list of literal key-value pair sources. Each literal should be a key and a literal value, e.g. `key=value`
+                                    items:
+                                      type: string
+                                    type: array
+                                  name:
+                                    description: Name stem for the generated resource. Resulting name will be NamePrefix + Name + hash(content)
+                                    type: string
+                                  namespace:
+                                    description: Optional Namespace for the generated resource
+                                    type: string
+                                type: object
+                              type: array
                             images:
                               description: Images are kustomize image overrides
                               items:
@@ -1375,6 +1635,36 @@ spec:
                             nameSuffix:
                               description: NameSuffix is a suffix appended to resources for kustomize apps
                               type: string
+                            secretGenerators:
+                              items:
+                                description: KustomizeSecretGenerator is a Kubernetes Secret resource generator in Kustomize.
+                                properties:
+                                  envs:
+                                    description: EnvFiles is a list of file paths where each file should be a key=value pair per line
+                                    items:
+                                      type: string
+                                    type: array
+                                  files:
+                                    description: Files is a list of file "sources" to use when creating a list of key, value pairs. A source takes the
+                                    items:
+                                      type: string
+                                    type: array
+                                  literals:
+                                    description: Literals is a list of literal key-value pair sources. Each literal should be a key and a literal value, e.g. `key=value`
+                                    items:
+                                      type: string
+                                    type: array
+                                  name:
+                                    description: Name stem for the generated resource. Resulting name will be NamePrefix + Name + hash(content)
+                                    type: string
+                                  namespace:
+                                    description: Optional Namespace for the generated resource
+                                    type: string
+                                  type:
+                                    description: 'Type is the type of secret, specifically the type field in v1.Secret of the Kubernetes API. Possible values include "Opaque", which is the default, or "kubernetes.io/tls" If "kubernetes.io/tls", then "literals" or "files" must have exactly two keys: "tls.key" and "tls.crt"'
+                                    type: string
+                                type: object
+                              type: array
                             version:
                               description: Version contains optional Kustomize version
                               type: string
@@ -1626,6 +1916,34 @@ spec:
                                 type: string
                               description: CommonLabels adds additional kustomize commonLabels
                               type: object
+                            configMapGenerators:
+                              description: ConfigMapGenerators contain ConfigMaps to generate
+                              items:
+                                description: KustomizeSecretGenerator is a Kubernetes Secret resource generator in Kustomize.
+                                properties:
+                                  envs:
+                                    description: EnvFiles is a list of file paths where each file should be a key=value pair per line
+                                    items:
+                                      type: string
+                                    type: array
+                                  files:
+                                    description: Files is a list of file "sources" to use when creating a list of key, value pairs. A source takes the
+                                    items:
+                                      type: string
+                                    type: array
+                                  literals:
+                                    description: Literals is a list of literal key-value pair sources. Each literal should be a key and a literal value, e.g. `key=value`
+                                    items:
+                                      type: string
+                                    type: array
+                                  name:
+                                    description: Name stem for the generated resource. Resulting name will be NamePrefix + Name + hash(content)
+                                    type: string
+                                  namespace:
+                                    description: Optional Namespace for the generated resource
+                                    type: string
+                                type: object
+                              type: array
                             images:
                               description: Images are kustomize image overrides
                               items:
@@ -1637,6 +1955,36 @@ spec:
                             nameSuffix:
                               description: NameSuffix is a suffix appended to resources for kustomize apps
                               type: string
+                            secretGenerators:
+                              items:
+                                description: KustomizeSecretGenerator is a Kubernetes Secret resource generator in Kustomize.
+                                properties:
+                                  envs:
+                                    description: EnvFiles is a list of file paths where each file should be a key=value pair per line
+                                    items:
+                                      type: string
+                                    type: array
+                                  files:
+                                    description: Files is a list of file "sources" to use when creating a list of key, value pairs. A source takes the
+                                    items:
+                                      type: string
+                                    type: array
+                                  literals:
+                                    description: Literals is a list of literal key-value pair sources. Each literal should be a key and a literal value, e.g. `key=value`
+                                    items:
+                                      type: string
+                                    type: array
+                                  name:
+                                    description: Name stem for the generated resource. Resulting name will be NamePrefix + Name + hash(content)
+                                    type: string
+                                  namespace:
+                                    description: Optional Namespace for the generated resource
+                                    type: string
+                                  type:
+                                    description: 'Type is the type of secret, specifically the type field in v1.Secret of the Kubernetes API. Possible values include "Opaque", which is the default, or "kubernetes.io/tls" If "kubernetes.io/tls", then "literals" or "files" must have exactly two keys: "tls.key" and "tls.crt"'
+                                    type: string
+                                type: object
+                              type: array
                             version:
                               description: Version contains optional Kustomize version
                               type: string

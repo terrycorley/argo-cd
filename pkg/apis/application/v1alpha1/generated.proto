@@ -239,6 +239,11 @@ message ApplicationSourceKustomize {
 
   // CommonAnnotations adds additional kustomize commonAnnotations
   map<string, string> commonAnnotations = 6;
+
+  // ConfigMapGenerators contain ConfigMaps to generate
+  repeated KustomizeConfigMapGenerator configMapGenerators = 7;
+
+  repeated KustomizeSecretGenerator secretGenerators = 8;
 }
 
 // ApplicationSourcePlugin holds config management plugin specific options
@@ -602,6 +607,27 @@ message KsonnetParameter {
   optional string value = 3;
 }
 
+// KustomizeSecretGenerator is a Kubernetes Secret resource generator in Kustomize.
+message KustomizeConfigMapGenerator {
+  // Optional Namespace for the generated resource
+  optional string namespace = 1;
+
+  // Name stem for the generated resource. Resulting name will
+  // be NamePrefix + Name + hash(content)
+  optional string name = 2;
+
+  // Literals is a list of literal key-value pair sources. Each literal should
+  // be a key and a literal value, e.g. `key=value`
+  repeated string literals = 7;
+
+  // Files is a list of file "sources" to use when creating a list of key, value pairs.
+  // A source takes the
+  repeated string files = 8;
+
+  // EnvFiles is a list of file paths where each file should be a key=value pair per line
+  repeated string envs = 9;
+}
+
 // KustomizeOptions are options for kustomize to use when building manifests
 message KustomizeOptions {
   // BuildOptions is a string of build parameters to use when calling `kustomize build`
@@ -609,6 +635,33 @@ message KustomizeOptions {
 
   // BinaryPath holds optional path to kustomize binary
   optional string binaryPath = 2;
+}
+
+// KustomizeSecretGenerator is a Kubernetes Secret resource generator in Kustomize.
+message KustomizeSecretGenerator {
+  // Optional Namespace for the generated resource
+  optional string namespace = 1;
+
+  // Name stem for the generated resource. Resulting name will
+  // be NamePrefix + Name + hash(content)
+  optional string name = 2;
+
+  // Literals is a list of literal key-value pair sources. Each literal should
+  // be a key and a literal value, e.g. `key=value`
+  repeated string literals = 7;
+
+  // Files is a list of file "sources" to use when creating a list of key, value pairs.
+  // A source takes the
+  repeated string files = 8;
+
+  // EnvFiles is a list of file paths where each file should be a key=value pair per line
+  repeated string envs = 9;
+
+  // Type is the type of secret, specifically the type field in v1.Secret of the Kubernetes API.
+  // Possible values include "Opaque", which is the default, or "kubernetes.io/tls"
+  // If "kubernetes.io/tls", then "literals" or "files" must have exactly two keys:
+  // "tls.key" and "tls.crt"
+  optional string type = 10;
 }
 
 // Operation contains requested operation parameters.
