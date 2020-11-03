@@ -6,6 +6,10 @@ import (
 	"path/filepath"
 	"testing"
 
+	appsv1 "k8s.io/api/apps/v1"
+	"k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+
 	"github.com/argoproj/pkg/exec"
 	"github.com/stretchr/testify/assert"
 
@@ -104,6 +108,96 @@ func TestKustomizeBuild(t *testing.T) {
 			assert.Equal(t, "1.15.5", image)
 		}
 	}
+}
+
+func TestKustomizeConfigMapGeneratorLiterals(t *testing.T) {
+	appPath, destroyDataDir := testDataDir(t, "./testdata/"+generators)
+
+	defer destroyDataDir()
+	kustomize := NewKustomizeApp(appPath, git.NopCreds{}, "", "")
+	kustomizeSource := v1alpha1.ApplicationSourceKustomize{
+		ConfigMapGenerators: v1alpha1.KustomizeConfigMapGenerators{
+			v1alpha1.KustomizeConfigMapGenerator{
+				Name:     "test-generator",
+				Literals: []string{"keyA=value1", "keyB=value2"},
+				Files:    []string{"./nginx.conf", "test-nginx.conf=./nginx.conf"},
+			},
+		},
+	}
+
+	objs, _, err := kustomize.Build(&kustomizeSource, nil)
+	assert.Nil(t, err)
+	if err != nil {
+		assert.Equal(t, len(objs), 2)
+	}
+
+	var (
+		configMap  v1.ConfigMap
+		deployment appsv1.Deployment
+	)
+
+	for _, obj := range objs {
+		switch obj.GetKind() {
+		case "ConfigMap":
+			err = runtime.DefaultUnstructuredConverter.FromUnstructured(obj.UnstructuredContent(), &configMap)
+			assert.NoError(t, err)
+		case "Deployment":
+			err = runtime.DefaultUnstructuredConverter.FromUnstructured(obj.UnstructuredContent(), &deployment)
+			assert.NoError(t, err)
+		}
+	}
+
+	assert.Equal(t, "test-generator-fh7fbk75m8", configMap.Name)
+	assert.Equal(t, configMap.Data["keyA"], "value1")
+	assert.Equal(t, configMap.Data["keyB"], "value2")
+	assert.Equal(t, configMap.Data["nginx.conf"], testFileRead(t, appPath+"/nginx.conf"))
+	assert.Equal(t, configMap.Data["test-nginx.conf"], testFileRead(t, appPath+"/nginx.conf"))
+	assert.Equal(t, configMap.Name, deployment.Spec.Template.Spec.Containers[0].EnvFrom[0].ConfigMapRef.Name)
+	assert.Equal(t, configMap.Name, deployment.Spec.Template.Spec.Volumes[0].ConfigMap.Name)
+}
+
+func TestKustomizeConfigMapGeneratorFromEnv(t *testing.T) {
+	appPath, destroyDataDir := testDataDir(t, "./testdata/"+generators)
+
+	defer destroyDataDir()
+	kustomize := NewKustomizeApp(appPath, git.NopCreds{}, "", "")
+	kustomizeSource := v1alpha1.ApplicationSourceKustomize{
+		ConfigMapGenerators: v1alpha1.KustomizeConfigMapGenerators{
+			v1alpha1.KustomizeConfigMapGenerator{
+				Name:     "test-generator",
+				EnvFiles: []string{"./test.env"},
+			},
+		},
+	}
+
+	objs, _, err := kustomize.Build(&kustomizeSource, nil)
+	assert.Nil(t, err)
+	if err != nil {
+		assert.Equal(t, len(objs), 2)
+	}
+
+	var (
+		configMap  v1.ConfigMap
+		deployment appsv1.Deployment
+	)
+
+	for _, obj := range objs {
+		switch obj.GetKind() {
+		case "ConfigMap":
+			err = runtime.DefaultUnstructuredConverter.FromUnstructured(obj.UnstructuredContent(), &configMap)
+			assert.NoError(t, err)
+		case "Deployment":
+			err = runtime.DefaultUnstructuredConverter.FromUnstructured(obj.UnstructuredContent(), &deployment)
+			assert.NoError(t, err)
+		}
+	}
+
+	assert.Equal(t, "test-generator-8bht68ghc4", configMap.Name)
+	assert.Equal(t, configMap.Data["envKeyA"], "envValueA")
+	assert.Equal(t, configMap.Data["envKeyB"], "envValueB")
+	assert.Equal(t, configMap.Name, deployment.Spec.Template.Spec.Containers[0].EnvFrom[0].ConfigMapRef.Name)
+	assert.Equal(t, configMap.Name, deployment.Spec.Template.Spec.Volumes[0].ConfigMap.Name)
+
 }
 
 func TestFindKustomization(t *testing.T) {
